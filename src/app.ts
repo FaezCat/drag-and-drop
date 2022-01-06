@@ -53,7 +53,7 @@ class ProjectList {
   hostElement: HTMLDivElement;
   element: HTMLElement;
 
-  constructor(private type: "active" | "finished") {
+  constructor(private type: "active" | "completed") {
     this.templateElement = document.getElementById("project-list")! as HTMLTemplateElement;
     this.hostElement = document.getElementById("app")! as HTMLDivElement;
   
@@ -167,3 +167,6 @@ class ProjectInput {
 
 // this initial form is only rendered once we instantiate ProjectInput as done below
 const projInput = new ProjectInput();
+
+const activeProjectList = new ProjectList("active");
+const completedProjectList = new ProjectList("completed");
