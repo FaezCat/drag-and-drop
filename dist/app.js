@@ -37,6 +37,16 @@ function Autobind(_, _2, descriptor) {
     };
     return adjDescriptor;
 }
+class ProjectList {
+    constructor(type) {
+        this.type = type;
+        this.templateElement = document.getElementById("project-list");
+        this.hostElement = document.getElementById("app");
+        const importedNode = document.importNode(this.templateElement.content, true);
+        this.element = importedNode.firstElementChild;
+        this.element.id = `${this.type}-projects`;
+    }
+}
 class ProjectInput {
     constructor() {
         this.templateElement = document.getElementById("project-input");
