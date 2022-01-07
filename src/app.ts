@@ -1,8 +1,22 @@
+// Project Type
+enum ProjectStatus { Active, Completed };
+
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus,
+    ) {
+  }
+}
+
 // Project State Management
 
 class ProjectState {
   private listeners: any[] = [];
-  private projects: any[] = [];
+  private projects: Project[] = [];
   private static instance: ProjectState;
 
   private constructor() {
@@ -22,12 +36,13 @@ class ProjectState {
   }
   
   addProject(title: string, description: string, numOfPeople: number) {
-    const newProject = {
-      id: Math.random().toString(),
-      title: title,
-      description: description,
-      people: numOfPeople,
-    };
+    const newProject = new Project(
+      Math.random().toString(),
+      title,
+      description,
+      numOfPeople,
+      ProjectStatus.Active,
+      )
     this.projects.push(newProject);
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice());
@@ -35,6 +50,7 @@ class ProjectState {
   }
 }
 
+// singleton to create a solitary ProjectState - then used by projectlist and projectinput
 const projectState = ProjectState.getInstance();
 
 // Validation
@@ -48,7 +64,7 @@ interface Validatable {
 }
 
 function validate(validatableInput: Validatable) {
-  let isValid = true;
+  let isValid: boolean = true;
   if (validatableInput.required) {
     isValid = isValid && validatableInput.value.toString().trim().length !== 0; 
   }
@@ -205,6 +221,7 @@ class ProjectInput {
     const userInput = this.gatherUserInput();
     if (Array.isArray(userInput)) {
       const [title, desc, people] = userInput;
+      // adds a new project to the single state
       projectState.addProject(title, desc, people);
       this.clearInputs();
     }
