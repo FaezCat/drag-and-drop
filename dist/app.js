@@ -99,15 +99,6 @@ class ProjectList extends Component {
         this.configure();
         this.renderContent();
     }
-    renderProjects() {
-        const listEl = document.getElementById(`${this.type}-projects-list`);
-        listEl.innerHTML = "";
-        for (const projItem of this.assignedProjects) {
-            const listItem = document.createElement("li");
-            listItem.textContent = projItem.title;
-            listEl.appendChild(listItem);
-        }
-    }
     configure() {
         projectState.addListener((projects) => {
             const relevantProjects = projects.filter(proj => {
@@ -125,19 +116,23 @@ class ProjectList extends Component {
         this.element.querySelector("ul").id = listId;
         this.element.querySelector("h2").textContent = this.type.toUpperCase() + " PROJECTS";
     }
+    renderProjects() {
+        const listEl = document.getElementById(`${this.type}-projects-list`);
+        listEl.innerHTML = "";
+        for (const projItem of this.assignedProjects) {
+            const listItem = document.createElement("li");
+            listItem.textContent = projItem.title;
+            listEl.appendChild(listItem);
+        }
+    }
 }
-class ProjectInput {
+class ProjectInput extends Component {
     constructor() {
-        this.templateElement = document.getElementById("project-input");
-        this.hostElement = document.getElementById("app");
-        const importedNode = document.importNode(this.templateElement.content, true);
-        this.element = importedNode.firstElementChild;
-        this.element.id = "user-input";
+        super("project-input", "app", true, "user-input");
         this.titleInputElement = this.element.querySelector('#title');
         this.descriptionInputElement = this.element.querySelector('#description');
         this.peopleInputElement = this.element.querySelector('#people');
         this.configure();
-        this.attach();
     }
     gatherUserInput() {
         const enteredTitle = this.titleInputElement.value;
@@ -168,6 +163,10 @@ class ProjectInput {
             return [enteredTitle, enteredDescription, +enteredPeople];
         }
     }
+    configure() {
+        this.element.addEventListener("submit", this.submitHandler);
+    }
+    renderContent() { }
     clearInputs() {
         this.titleInputElement.value = "";
         this.descriptionInputElement.value = "";
@@ -181,12 +180,6 @@ class ProjectInput {
             projectState.addProject(title, desc, people);
             this.clearInputs();
         }
-    }
-    configure() {
-        this.element.addEventListener("submit", this.submitHandler);
-    }
-    attach() {
-        this.hostElement.insertAdjacentElement("afterbegin", this.element);
     }
 }
 __decorate([
