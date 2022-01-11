@@ -141,33 +141,14 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
 }
 
 // ProjectList Class
-class ProjectList {
-  templateElement: HTMLTemplateElement;
-  hostElement: HTMLDivElement;
-  element: HTMLElement;
+class ProjectList extends Component<HTMLDivElement, HTMLElement> {
   assignedProjects: Project[];
 
   constructor(private type: "active" | "completed") {
-    this.templateElement = document.getElementById("project-list")! as HTMLTemplateElement;
-    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+    super("project-list", "app", false, `${type}-projects`, );
     this.assignedProjects = [];
-    // note that .content is available on template elms specifically
-    const importedNode = document.importNode(this.templateElement.content, true);
-    this.element = importedNode.firstElementChild as HTMLElement;
-    this.element.id = `${this.type}-projects`;
     
-      projectState.addListener((projects: Project[]) => {
-        const relevantProjects = projects.filter(proj => { 
-          if (this.type === "active") {
-            return proj.status === ProjectStatus.Active;
-          }
-          return proj.status === ProjectStatus.Completed;
-        });
-        this.assignedProjects = relevantProjects;
-        this.renderProjects();
-      });
-    
-    this.attach();
+    this.configure();
     this.renderContent();
   }
 
@@ -181,15 +162,23 @@ class ProjectList {
     }
   }
 
-  private renderContent() {
+  configure() {
+    projectState.addListener((projects: Project[]) => {
+      const relevantProjects = projects.filter(proj => { 
+        if (this.type === "active") {
+          return proj.status === ProjectStatus.Active;
+        }
+        return proj.status === ProjectStatus.Completed;
+      });
+      this.assignedProjects = relevantProjects;
+      this.renderProjects();
+    });
+  }
+
+  renderContent() {
     const listId = `${this.type}-projects-list`;
     this.element.querySelector("ul")!.id = listId;
     this.element.querySelector("h2")!.textContent = this.type.toUpperCase() + " PROJECTS";
-  }
-
-  private attach() {
-    // beforeend => before closing tag
-    this.hostElement.insertAdjacentElement("beforeend", this.element);
   }
 }
 
