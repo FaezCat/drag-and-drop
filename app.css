@@ -68,11 +68,11 @@ button:active {
   align-items: center;
 }
 
-#finished-projects {
+#completed-projects {
   border-color: #0044ff;
 }
 
-#finished-projects header {
+#completed-projects header {
   background: #0044ff;
 }
 
