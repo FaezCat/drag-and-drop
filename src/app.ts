@@ -218,8 +218,10 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> implements Drag
     
   }
 
+  @Autobind
   dragLeaveHandler(_: DragEvent): void {
-    
+    const listEl = this.element.querySelector('ul')!;
+    listEl.classList.remove('droppable');
   }
 
   configure() {

@@ -145,6 +145,8 @@ class ProjectList extends Component {
     dropHandler(_) {
     }
     dragLeaveHandler(_) {
+        const listEl = this.element.querySelector('ul');
+        listEl.classList.remove('droppable');
     }
     configure() {
         this.element.addEventListener('dragover', this.dragOverHandler);
@@ -177,6 +179,9 @@ class ProjectList extends Component {
 __decorate([
     Autobind
 ], ProjectList.prototype, "dragOverHandler", null);
+__decorate([
+    Autobind
+], ProjectList.prototype, "dragLeaveHandler", null);
 class ProjectInput extends Component {
     constructor() {
         super("project-input", "app", true, "user-input");
