@@ -1,21 +1,7 @@
 /// <reference path="drag-and-drop-interfaces.ts" />
+/// <reference path="project-model.ts" />
 
 namespace App {
-  // Project Type
-  enum ProjectStatus { Active, Completed };
-  
-  class Project {
-    constructor(
-      public id: string,
-      public title: string,
-      public description: string,
-      public people: number,
-      public status: ProjectStatus,
-      ) {
-    }
-  }
-  
-  // Project State Management
   // this custom type is a function which returns void (nothing is actively returned)
   type Listener<T> = (items: T[]) => void;
   
