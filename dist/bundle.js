@@ -64,7 +64,11 @@ var App;
             }
         }
     }
-    const projectState = ProjectState.getInstance();
+    App.ProjectState = ProjectState;
+    App.projectState = ProjectState.getInstance();
+})(App || (App = {}));
+var App;
+(function (App) {
     function validate(validatableInput) {
         let isValid = true;
         if (validatableInput.required) {
@@ -164,7 +168,7 @@ var App;
         }
         dropHandler(event) {
             const projId = event.dataTransfer.getData('text/plain');
-            projectState.moveProject(projId, this.type === 'active' ? App.ProjectStatus.Active : App.ProjectStatus.Completed);
+            App.projectState.moveProject(projId, this.type === 'active' ? App.ProjectStatus.Active : App.ProjectStatus.Completed);
         }
         dragLeaveHandler(_) {
             const listEl = this.element.querySelector('ul');
@@ -174,7 +178,7 @@ var App;
             this.element.addEventListener('dragover', this.dragOverHandler);
             this.element.addEventListener('drop', this.dropHandler);
             this.element.addEventListener('dragleave', this.dragLeaveHandler);
-            projectState.addListener((projects) => {
+            App.projectState.addListener((projects) => {
                 const relevantProjects = projects.filter(proj => {
                     if (this.type === "active") {
                         return proj.status === App.ProjectStatus.Active;
@@ -258,7 +262,7 @@ var App;
             const userInput = this.gatherUserInput();
             if (Array.isArray(userInput)) {
                 const [title, desc, people] = userInput;
-                projectState.addProject(title, desc, people);
+                App.projectState.addProject(title, desc, people);
                 this.clearInputs();
             }
         }
