@@ -1,3 +1,5 @@
+import { Project, ProjectStatus } from '../models/project.js';
+
 // this custom type is a function which returns void (nothing is actively returned)
 type Listener<T> = (items: T[]) => void;
 
